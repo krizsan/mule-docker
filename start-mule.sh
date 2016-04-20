@@ -13,6 +13,20 @@ fi
 # In addition you may want to add the SYS_NICE capability, in order for ntpd to be able to modify its priority.
 ntpd -s
 
+# Set RMI server IP address in the Mule ESB wrapper configuration as to make JMX reachable from outside the container.
+if [ -z "$MULE_EXTERNAL_IP" ]
+then
+    echo "No external Mule ESB IP address set, using 192.168.99.100."
+    MULE_EXTERNAL_IP="192.168.99.100"
+else
+    echo "Mule ESB external IP address set to $MULE_EXTERNAL_IP"
+fi
+sed -i -e"s|Djava.rmi.server.hostname=.*|Djava.rmi.server.hostname=${MULE_EXTERNAL_IP}|g" ${MULE_HOME}/conf/wrapper.conf
+
 # Start Mule ESB.
 # The Mule startup script will take care of launching Mule using the appropriate user.
-exec ${MULE_HOME}/bin/mule
+${MULE_HOME}/bin/mule start
+
+# Prevent the process in which the Docker container is launched to be terminated which will cause the
+# container to be terminated as well.
+exec sh
