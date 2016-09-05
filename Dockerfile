@@ -1,7 +1,7 @@
 # Mule ESB Community Edition Docker image running on Alpine Linux and Oracle Java 8 (JDK).
 # The base image contains glibc, which is required for the Java Service wrapper that is used by Mule ESB.
 #
-FROM anapsix/alpine-java:jdk8
+FROM anapsix/alpine-java:8_jdk_unlimited
 
 MAINTAINER Ivan Krizsan, https://github.com/krizsan
 
