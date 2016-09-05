@@ -37,7 +37,8 @@ RUN apk --no-cache update && \
     wget ${MULE_DOWNLOAD_URL} && \
     tar xvzf mule-standalone-*.tar.gz && \
     rm mule-standalone-*.tar.gz && \
-    mv mule-standalone-* mule-standalone
+    mv mule-standalone-* mule-standalone && \
+    rm -rf ${MULE_HOME}/src
 
 # Copy the script used to launch Mule ESB when a container is started.
 COPY ./start-mule.sh /opt/
