@@ -1,12 +1,12 @@
 # Mule ESB Community Edition Docker Image
-Docker image with Mule ESB on Alpine Linux and Oracle Java 8 (JRE).
+Docker image with Mule ESB on Alpine Linux and Oracle Java 8.
 
 In order for the time of the container to be synchronized (using ntpd), it must be run with the SYS_TIME capability.
 In addition you may want to add the SYS_NICE capability, in order for ntpd to be able to modify its priority.
 
 Example:
 ```
-docker run --cap-add=SYS_TIME --cap-add=SYS_NICE ivankrizsan/mule:latest
+docker run --cap-add=SYS_TIME --cap-add=SYS_NICE ivankrizsan/mule-docker:latest
 ```
 
 ## Volumes
