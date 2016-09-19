@@ -28,7 +28,7 @@ RUN apk --no-cache update && \
 # Create directory used by NTPD.
     mkdir -p /var/empty && \
 # Create the user and group that will be used to run Mule ESB.
-    addgroup ${RUN_AS_USER} && adduser -D -G ${RUN_AS_USER} ${RUN_AS_USER} && \
+    addgroup ${RUN_AS_USER} && adduser -G ${RUN_AS_USER} -g "MuleESB User" -s /bin/sh -D ${RUN_AS_USER} && \
 # Needed for SSL support when downloading Mule ESB from HTTPS URL.
     apk --no-cache add ca-certificates && \
     update-ca-certificates && \
