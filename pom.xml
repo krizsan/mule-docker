@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Before attempting to build Docker images, the DOCKER_HOST environment
+    variable needs to be set to the local Docker client URL:
+    Windows: set DOCKER_HOST=http://192.168.99.100:2376
+    OS X Boot2Docker: export DOCKER_HOST=tcp://192.168.99.100:2376
+    OS X Docker for Mac: http://localhost:2376
+    To build a Docker image with Mule CE using, for example, the following command:
+    mvn dockerfile:build -Pmule-3.8.1
+
+    Author: Ivan Krizsan
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>se.ivankrizsan.docker.mule</groupId>
+    <artifactId>mule-docker</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>mule-docker</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <profiles>
+        <!-- Builds Mule CE version 3.8.1 Docker image. -->
+        <profile>
+            <id>mule-3.8.1</id>
+            <properties>
+                <!-- Name of Docker image that will be built. -->
+                <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
+                <!-- Tag of Docker image that will be built. -->
+                <docker.image.tag>3.8.1</docker.image.tag>
+                <!-- Directory in which the Dockerfile is located. -->
+                <dockerfile.contextDirectory>${project.basedir}/mule381</dockerfile.contextDirectory>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <imageName>${docker.image.name}</imageName>
+                    <repository>${docker.image.name}</repository>
+                    <tag>${docker.image.tag}</tag>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                    </imageTags>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
