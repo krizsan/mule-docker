@@ -27,4 +27,3 @@ sed -i -e"s|Djava.rmi.server.hostname=.*|Djava.rmi.server.hostname=${MULE_EXTERN
 # The Mule startup script will take care of launching Mule using the appropriate user.
 # Mule is launched in the foreground and will thus be the main process of the container.
 ${MULE_HOME}/bin/mule console
-
