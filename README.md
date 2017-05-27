@@ -23,7 +23,7 @@ This IP address is used to expose JMX of the Mule ESB instance running in the Do
 
 Example:
 ```
-docker run -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockholm" -e "CONTAINER_EXTERNAL_IP=192.168.99.100" ivankrizsan/mule:latest
+docker run -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockholm" -e "MULE_EXTERNAL_IP=192.168.99.100" -p "1099:1099" ivankrizsan/mule:latest
 ```
 
 ## Exposed ports
