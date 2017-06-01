@@ -27,8 +27,9 @@ docker run -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockh
 ```
 
 ## Exposed ports
-- 8081  -   Default HTTP port.
+- 8081  - Default HTTP port.
 - 1099  - JMX port.
+- 8899  - Jolokia HTTP service port.
 
 ## JXM Monitoring
 To monitor a Mule ESB instance running in a Docker container, use the following JMX service URL:<br/>
@@ -36,6 +37,12 @@ To monitor a Mule ESB instance running in a Docker container, use the following 
 service:jmx:rmi:///jndi/rmi://192.168.99.100:1099/jmxrmi
 ```
 <br/>Note that the IP address may need to be updated and the port number depends on the port mapping configuration when the container was launched.<br/>
+
+## JMX Monitoring with Jolokia
+Jolokia is installed in the Mule ESB running in containers created from this Docker image.
+Its HTTP API is exposed on the Jolokia HTTP service port as listed above.
+To change this port, modify the mule-config.xml file in the jolokia-enabler Mule application.
+For more information on Jolokia, please refer to https://jolokia.org/
 
 ## Note!
 Mule ESB on Alpine Linux has not, to my knowledge, received extensive testing.

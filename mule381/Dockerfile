@@ -38,12 +38,16 @@ RUN apk --no-cache update && \
     tar xvzf mule-standalone-*.tar.gz && \
     rm mule-standalone-*.tar.gz && \
     mv mule-standalone-* mule-standalone && \
-    rm -rf ${MULE_HOME}/src
+    rm -rf ${MULE_HOME}/src && \
+# Download the Jolokia JAR-file to the correct location in the Mule installation.
+    wget -O ${MULE_HOME}/lib/opt/jolokia-mule-agent.jar http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-mule/1.3.6/jolokia-mule-1.3.6-agent.jar
 
 # Copy the script used to launch Mule ESB when a container is started.
 COPY ./start-mule.sh /opt/
 # Copy configuration files to Mule ESB configuration directory.
 COPY ./conf/*.* ${MULE_HOME}/conf/
+# Add the Jolokia enabler Mule application.
+ADD ./apps/jolokia-enabler ${MULE_HOME}/apps/jolokia-enabler
 
 # Make the start-script executable.
 RUN chmod +x /opt/start-mule.sh && \
@@ -64,4 +68,5 @@ VOLUME ["${MULE_HOME}/logs", "${MULE_HOME}/conf", "${MULE_HOME}/apps", "${MULE_H
 EXPOSE 8081
 # JMX port.
 EXPOSE 1099
-
+# Jolokia port.
+EXPOSE 8899
