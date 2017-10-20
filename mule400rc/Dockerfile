@@ -19,7 +19,7 @@ ENV MULE_VERSION=4.0.0-rc \
     SET_CONTAINER_TIMEZONE=true \
     # Default container timezone.
     CONTAINER_TIMEZONE=Europe/Stockholm
-ENV MULE_DOWNLOAD_URL=https://repository-master.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz \
+ENV MULE_DOWNLOAD_URL=https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz \
     MULE_HOME="$INSTALLATION_PARENT/$INSTALLATION_DIRECTORY_NAME"
 
     # Add user (and group) which will run Mule ESB in the container.

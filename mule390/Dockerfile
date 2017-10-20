@@ -7,7 +7,7 @@ MAINTAINER Ivan Krizsan, https://github.com/krizsan
 
 # Mule ESB CE version number.
 ENV MULE_VERSION=3.9.0
-ENV MULE_DOWNLOAD_URL=https://repository-master.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz
+ENV MULE_DOWNLOAD_URL=https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz
 # Mule home directory in Docker image.
 ENV MULE_HOME=/opt/mule-standalone \
 # User and group that the Mule ESB instance will be run as, in order not to run as root.
