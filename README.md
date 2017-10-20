@@ -1,6 +1,14 @@
 # Mule ESB Community Edition Docker Image
 Docker image with Mule ESB on Alpine Linux and Oracle Java 8.
 
+## Building
+Before building with Maven, the DOCKER_HOST environment variable needs to be set.
+Example on Windows:<br/>
+```set DOCKER_HOST=http://192.168.99.100:2375```
+To build, use docker:build with the appropriate profile. Example:<br/>
+```mvn -Pmule-4.0.0-rc docker:build```
+
+## Running
 In order for the time of the container to be synchronized (using ntpd), it must be run with the SYS_TIME capability.
 In addition you may want to add the SYS_NICE capability, in order for ntpd to be able to modify its priority.
 
@@ -46,3 +54,7 @@ For more information on Jolokia, please refer to https://jolokia.org/
 
 ## Note!
 Mule ESB on Alpine Linux has not, to my knowledge, received extensive testing.
+
+## Mule ESB 4
+Due to differences in Mule ESB 4, the Docker image containing this version is built using Debian.
+In addition does not have Jolokia installed.

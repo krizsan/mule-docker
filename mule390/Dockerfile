@@ -6,7 +6,7 @@ FROM anapsix/alpine-java:8_jdk_unlimited
 MAINTAINER Ivan Krizsan, https://github.com/krizsan
 
 # Mule ESB CE version number.
-ENV MULE_VERSION=3.8.1
+ENV MULE_VERSION=3.9.0
 ENV MULE_DOWNLOAD_URL=https://repository-master.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz
 # Mule home directory in Docker image.
 ENV MULE_HOME=/opt/mule-standalone \
