@@ -1,7 +1,7 @@
 # Mule ESB Community Edition Docker Image
 Docker image with Mule ESB on Linux and Java 8.
 Mule ESB versions prior to version 4 are built on Alpine Linux and Oracle Java 8.
-Version 4 is built on Debian and OpenJDK 8.
+Version 4 is built on Debian and OpenJDK 8 JRE.
 
 ## Building
 Before building with Maven, the DOCKER_HOST environment variable needs to be set.

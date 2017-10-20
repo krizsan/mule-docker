@@ -1,4 +1,4 @@
-# Mule ESB Community Edition Docker image running on Debian Linux and Oracle Java 8 (JDK).
+# Mule ESB Community Edition Docker image running on Debian Linux and OpenJDK Java 8 JRE.
 #
 FROM openjdk:8u141-jre-slim
 
