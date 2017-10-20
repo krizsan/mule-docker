@@ -1,5 +1,7 @@
 # Mule ESB Community Edition Docker Image
-Docker image with Mule ESB on Alpine Linux and Oracle Java 8.
+Docker image with Mule ESB on Linux and Java 8.
+Mule ESB versions prior to version 4 are built on Alpine Linux and Oracle Java 8.
+Version 4 is built on Debian and OpenJDK 8.
 
 ## Building
 Before building with Maven, the DOCKER_HOST environment variable needs to be set.
@@ -31,7 +33,7 @@ This IP address is used to expose JMX of the Mule ESB instance running in the Do
 
 Example:
 ```
-docker run -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockholm" -e "MULE_EXTERNAL_IP=192.168.99.100" -p "1099:1099" ivankrizsan/mule-docker:latest
+docker run --cap-add=SYS_TIME --cap-add=SYS_NICE -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockholm" -e "MULE_EXTERNAL_IP=192.168.99.100" -p "1099:1099" ivankrizsan/mule-docker:latest
 ```
 
 ## Exposed ports
