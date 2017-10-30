@@ -1,23 +1,22 @@
 #! /bin/sh
-# Set the timezone. Base image does not contain the setup-timezone script, so an alternate way is used.
+# Set the timezone of the container.
 if [ "$SET_CONTAINER_TIMEZONE" = "true" ]; then
-    cp /usr/share/zoneinfo/${CONTAINER_TIMEZONE} /etc/localtime && \
-	echo "${CONTAINER_TIMEZONE}" >  /etc/timezone && \
-	echo "Container timezone set to: $CONTAINER_TIMEZONE"
+    echo ${CONTAINER_TIMEZONE} >/etc/timezone && \
+    dpkg-reconfigure -f noninteractive tzdata
+    echo "Container timezone set to: $CONTAINER_TIMEZONE"
 else
-	echo "Container timezone not modified"
+    echo "Container timezone not modified"
 fi
 
-# Force immediate synchronisation of the time and start the time-synchronization service.
-# In order to be able to use ntpd in the container, it must be run with the SYS_TIME capability.
-# In addition you may want to add the SYS_NICE capability, in order for ntpd to be able to modify its priority.
-ntpd -s
+# Synchronize the time of the container.
+ntpd -gq
+service ntp start
 
 # Set RMI server IP address in the Mule ESB wrapper configuration as to make JMX reachable from outside the container.
 if [ -z "$MULE_EXTERNAL_IP" ]
 then
-    echo "No external Mule ESB IP address set, using 192.168.99.100."
-    MULE_EXTERNAL_IP="192.168.99.100"
+    export MULE_EXTERNAL_IP=$(getent hosts $HOSTNAME | awk '{print $(NF - 1)}')
+    echo "No external Mule ESB IP address set, using ${MULE_EXTERNAL_IP}"
 else
     echo "Mule ESB external IP address set to $MULE_EXTERNAL_IP"
 fi

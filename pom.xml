@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Build the different Docker images containing the Mule ESB Community Edition.
+    Before attempting to build Docker images, the DOCKER_HOST environment
+    variable needs to be set to the local Docker client URL:
+    Windows: set DOCKER_HOST=http://192.168.99.100:2376
+    OS X Boot2Docker: export DOCKER_HOST=tcp://192.168.99.100:2376
+    OS X Docker for Mac: http://localhost:2376
+    To build a Docker image with Mule CE using, for example, the following command:
+    mvn dockerfile:build -Pmule-3.8.1
 
     Author: Ivan Krizsan
 -->
@@ -23,8 +29,6 @@
         <docker-maven-plugin.version>0.21.0</docker-maven-plugin.version>
         <!-- URL to the Docker host used to build the Docker image. -->
         <docker.host.url>http://127.0.0.1:2376</docker.host.url>
-        <!-- Name of Docker image that will be built. -->
-        <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
         <!-- Name of the Dockerfile the Docker image will be built from. -->
         <docker.file.name>Dockerfile</docker.file.name>
         <!--Log output during creation of Docker image to standard out. -->
@@ -32,18 +36,6 @@
     </properties>
 
     <profiles>
-        <!-- Builds Mule CE version 3.7.0 Docker image. -->
-        <profile>
-            <id>mule-3.7.0</id>
-            <properties>
-                <!-- Name of Docker image that will be built. -->
-                <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
-                <!-- Tag of Docker image that will be built. -->
-                <docker.image.tag>3.7.0</docker.image.tag>
-                <!-- Directory in which the Dockerfile is located. -->
-                <docker.image.src.root>${project.basedir}/mule370</docker.image.src.root>
-            </properties>
-        </profile>
         <!-- Builds Mule CE version 3.8.1 Docker image. -->
         <profile>
             <id>mule-3.8.1</id>
@@ -60,6 +52,8 @@
         <profile>
             <id>mule-3.9.0</id>
             <properties>
+                <!-- Name of Docker image that will be built. -->
+                <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
                 <!-- Tag of Docker image that will be built. -->
                 <docker.image.tag>3.9.0</docker.image.tag>
                 <!-- Directory in which the Dockerfile is located. -->
@@ -70,6 +64,8 @@
         <profile>
             <id>mule-4.0.0-rc</id>
             <properties>
+                <!-- Name of Docker image that will be built. -->
+                <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
                 <!-- Tag of Docker image that will be built. -->
                 <docker.image.tag>4.0.0-rc</docker.image.tag>
                 <!-- Directory in which the Dockerfile is located. -->

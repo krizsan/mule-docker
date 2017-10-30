@@ -1,13 +1,10 @@
 # Mule ESB Community Edition Docker Image
-Docker image with Mule ESB on Linux and Java 8.
-Mule ESB versions prior to version 4 are built on Alpine Linux and Oracle Java 8.
-Version 4 is built on Debian and OpenJDK 8 JRE.
+Docker image with Mule ESB on Debian Linux and OpenJDK Java 8.
 
 ## Building
-Before building with Maven, the DOCKER_HOST environment variable needs to be set.
-Example on Windows:<br/>
-```set DOCKER_HOST=http://192.168.99.100:2375```
-To build, use docker:build with the appropriate profile. Example:<br/>
+Before building with Maven, the docker.host.url property in the pom.xml file needs
+to be set to the URL on which the Docker daemon API is exposed.<br/>
+To build a Docker image for a particular version of the Mule ESB, use docker:build with the appropriate profile. Example:<br/>
 ```mvn -Pmule-4.0.0-rc docker:build```
 
 ## Running
@@ -29,11 +26,12 @@ docker run --cap-add=SYS_TIME --cap-add=SYS_NICE ivankrizsan/mule-docker:latest
 - SET_CONTAINER_TIMEZONE - Whether to set the timezone of the Docker container when starting it. Default is true.
 - CONTAINER_TIMEZONE - Timezone to use in container. Default is Europe/Stockholm.
 - MULE_EXTERNAL_IP - External IP address of the Docker container. On Mac and Windows this will be the Docker machine's IP address.
+If not set, an attempt will be made to use the IP address of the container once it is started.
 This IP address is used to expose JMX of the Mule ESB instance running in the Docker container.
 
 Example:
 ```
-docker run --cap-add=SYS_TIME --cap-add=SYS_NICE -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockholm" -e "MULE_EXTERNAL_IP=192.168.99.100" -p "1099:1099" ivankrizsan/mule-docker:latest
+docker run -e "SET_CONTAINER_TIMEZONE=true" -e "CONTAINER_TIMEZONE=Europe/Stockholm" -e "MULE_EXTERNAL_IP=192.168.99.100" -p "1099:1099" ivankrizsan/mule-docker:latest
 ```
 
 ## Exposed ports
@@ -58,5 +56,4 @@ For more information on Jolokia, please refer to https://jolokia.org/
 Mule ESB on Alpine Linux has not, to my knowledge, received extensive testing.
 
 ## Mule ESB 4
-Due to differences in Mule ESB 4, the Docker image containing this version is built using Debian.
-In addition does not have Jolokia installed.
+The Docker image containing version 4 of Mule ESB will not have Jolokia installed.

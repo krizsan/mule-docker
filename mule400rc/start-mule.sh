@@ -15,8 +15,8 @@ service ntp start
 # Set RMI server IP address in the Mule ESB wrapper configuration as to make JMX reachable from outside the container.
 if [ -z "$MULE_EXTERNAL_IP" ]
 then
-    echo "No external Mule ESB IP address set, using 192.168.99.100."
-    MULE_EXTERNAL_IP="192.168.99.100"
+    export MULE_EXTERNAL_IP=$(getent hosts $HOSTNAME | awk '{print $(NF - 1)}')
+    echo "No external Mule ESB IP address set, using ${MULE_EXTERNAL_IP}"
 else
     echo "Mule ESB external IP address set to $MULE_EXTERNAL_IP"
 fi

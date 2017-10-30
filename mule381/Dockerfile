@@ -1,59 +1,64 @@
-# Mule ESB Community Edition Docker image running on Alpine Linux and Oracle Java 8 (JDK).
-# The base image contains glibc, which is required for the Java Service wrapper that is used by Mule ESB.
+# Mule ESB Community Edition Docker image running on Debian Linux and Oracle Java 8 (JDK).
 #
-FROM anapsix/alpine-java:8_jdk_unlimited
+FROM openjdk:8u141-jre-slim
 
 MAINTAINER Ivan Krizsan, https://github.com/krizsan
 
-# Mule ESB CE version number.
-ENV MULE_VERSION=3.8.1
-ENV MULE_DOWNLOAD_URL=https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz
-# Mule home directory in Docker image.
-ENV MULE_HOME=/opt/mule-standalone \
-# User and group that the Mule ESB instance will be run as, in order not to run as root.
-# Note that the name of this property must match the property name used in the Mule ESB startup script.
+    # Mule ESB CE version number.
+ENV MULE_VERSION=3.8.1 \
+    # Jolokia JMX-over-HTTP Mule agent version.
+    JOLOKIA_VERSION=1.3.7 \
+    # Name of file which the Mule ESB distribution will be downloaded to.
+    MULE_ARCHIVE="mule-standalone.tar.gz" \
+    # Parent directory in which the Mule installation directory will be located.
+    INSTALLATION_PARENT=/opt \
+    # Name of Mule installation directory.
+    INSTALLATION_DIRECTORY_NAME=mule-standalone \
+    # User and group that the Mule ESB instance will be run as, in order not to run as root.
+    # Note that the name of this property must match the property name used in the Mule ESB startup script.
     RUN_AS_USER=mule \
-# Set this environment variable to true to set timezone on container start.
+    # Set this environment variable to true to set timezone on container start.
     SET_CONTAINER_TIMEZONE=true \
-# Default container timezone.
+    # Default container timezone.
     CONTAINER_TIMEZONE=Europe/Stockholm
+ENV MULE_DOWNLOAD_URL=https://repository-master.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/${MULE_VERSION}/mule-standalone-${MULE_VERSION}.tar.gz \
+    MULE_HOME="$INSTALLATION_PARENT/$INSTALLATION_DIRECTORY_NAME"
 
-# Install NTPD for time synchronization.
-RUN apk --no-cache update && \
-    apk --no-cache upgrade && \
-    apk --no-cache add tzdata openntpd && \
-# Create the /opt directory in which software in the container is installed.
-    mkdir -p /opt && \
-    cd /opt && \
-# Create directory used by NTPD.
-    mkdir -p /var/empty && \
-# Create the user and group that will be used to run Mule ESB.
-    addgroup ${RUN_AS_USER} && adduser -G ${RUN_AS_USER} -g "MuleESB User" -s /bin/sh -D ${RUN_AS_USER} && \
-# Needed for SSL support when downloading Mule ESB from HTTPS URL.
-    apk --no-cache add ca-certificates && \
-    update-ca-certificates && \
-    apk --no-cache add openssl && \
-# Install Mule ESB.
+    # Add user (and group) which will run Mule ESB in the container.
+RUN groupadd -f ${RUN_AS_USER} && \
+    useradd --system --home /home/${RUN_AS_USER} -g ${RUN_AS_USER} ${RUN_AS_USER} && \
+    # Updates for Debian.
+    apt-get update && \
+    apt-get dist-upgrade -y && \
+    # Install NTP for time synchronization, wget to download stuff and
+    # procps since Mule uses the ps command and it is not installed per default.
+    apt-get install -y ntp wget procps && \
+    # Clean up.
+    apt-get autoclean && apt-get --purge -y autoremove && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+
+    # Download and unpack Mule ESB.
+    cd ${INSTALLATION_PARENT} && \
     wget ${MULE_DOWNLOAD_URL} && \
     tar xvzf mule-standalone-*.tar.gz && \
     rm mule-standalone-*.tar.gz && \
-    mv mule-standalone-* mule-standalone && \
-    rm -rf ${MULE_HOME}/src && \
-# Download the Jolokia JAR-file to the correct location in the Mule installation.
-    wget -O ${MULE_HOME}/lib/opt/jolokia-mule-agent.jar http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-mule/1.3.6/jolokia-mule-1.3.6-agent.jar
+    mv mule-standalone-* ${INSTALLATION_DIRECTORY_NAME} && \
+    # Download the Jolokia JAR-file to the correct location in the Mule installation.
+    wget -O ${MULE_HOME}/lib/opt/jolokia-mule-agent.jar http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-mule/${JOLOKIA_VERSION}/jolokia-mule-${JOLOKIA_VERSION}-agent.jar
+
 
 # Copy the script used to launch Mule ESB when a container is started.
-COPY ./start-mule.sh /opt/
+COPY ./start-mule.sh ${INSTALLATION_PARENT}/
 # Copy configuration files to Mule ESB configuration directory.
 COPY ./conf/*.* ${MULE_HOME}/conf/
 # Add the Jolokia enabler Mule application.
 ADD ./apps/jolokia-enabler ${MULE_HOME}/apps/jolokia-enabler
 
-# Make the start-script executable.
-RUN chmod +x /opt/start-mule.sh && \
-# Set the owner of all Mule-related files to the user which will be used to run Mule.
+    # Make the start-script executable.
+RUN chmod +x ${INSTALLATION_PARENT}/start-mule.sh && \
+    # Set the owner of all Mule-related files to the user which will be used to run Mule.
     chown -R ${RUN_AS_USER}:${RUN_AS_USER} ${MULE_HOME} && \
-# Restrict access to the JMX passwords file, or Mule ESB will fail to startup.
+    # Restrict access to the JMX passwords file, or Mule ESB will fail to startup.
     chmod 600 ${MULE_HOME}/conf/jmx.password
 
 WORKDIR ${MULE_HOME}
