@@ -36,6 +36,18 @@
     </properties>
 
     <profiles>
+        <!-- Builds Mule CE version 3.7.0 Docker image. -->
+        <profile>
+            <id>mule-3.7.0</id>
+            <properties>
+                <!-- Name of Docker image that will be built. -->
+                <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
+                <!-- Tag of Docker image that will be built. -->
+                <docker.image.tag>3.7.0</docker.image.tag>
+                <!-- Directory in which the Dockerfile is located. -->
+                <docker.image.src.root>${project.basedir}/mule370</docker.image.src.root>
+            </properties>
+        </profile>
         <!-- Builds Mule CE version 3.8.1 Docker image. -->
         <profile>
             <id>mule-3.8.1</id>
