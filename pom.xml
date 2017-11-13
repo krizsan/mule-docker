@@ -72,16 +72,16 @@
                 <docker.image.src.root>${project.basedir}/mule390</docker.image.src.root>
             </properties>
         </profile>
-        <!-- Builds Mule CE version 4.0.0-rc Docker image. -->
+        <!-- Builds Mule CE version 4.0.0 Docker image. -->
         <profile>
-            <id>mule-4.0.0-rc</id>
+            <id>mule-4.0.0</id>
             <properties>
                 <!-- Name of Docker image that will be built. -->
                 <docker.image.name>ivankrizsan/mule-docker</docker.image.name>
                 <!-- Tag of Docker image that will be built. -->
-                <docker.image.tag>4.0.0-rc</docker.image.tag>
+                <docker.image.tag>4.0.0</docker.image.tag>
                 <!-- Directory in which the Dockerfile is located. -->
-                <docker.image.src.root>${project.basedir}/mule400rc</docker.image.src.root>
+                <docker.image.src.root>${project.basedir}/mule400</docker.image.src.root>
             </properties>
         </profile>
     </profiles>

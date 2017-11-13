@@ -5,7 +5,7 @@ FROM openjdk:8u141-jre-slim
 MAINTAINER Ivan Krizsan, https://github.com/krizsan
 
     # Mule ESB CE version number.
-ENV MULE_VERSION=4.0.0-rc \
+ENV MULE_VERSION=4.0.0 \
     # Name of file which the Mule ESB distribution will be downloaded to.
     MULE_ARCHIVE="mule-standalone.tar.gz" \
     # Parent directory in which the Mule installation directory will be located.

@@ -5,7 +5,7 @@ Docker image with Mule ESB on Debian Linux and OpenJDK Java 8.
 Before building with Maven, the docker.host.url property in the pom.xml file needs
 to be set to the URL on which the Docker daemon API is exposed.<br/>
 To build a Docker image for a particular version of the Mule ESB, use docker:build with the appropriate profile. Example:<br/>
-```mvn -Pmule-4.0.0-rc docker:build```
+```mvn -Pmule-4.0.0 docker:build```
 
 ## Running
 In order for the time of the container to be synchronized (using ntpd), it must be run with the SYS_TIME capability.
