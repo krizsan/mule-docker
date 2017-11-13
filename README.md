@@ -52,8 +52,5 @@ Its HTTP API is exposed on the Jolokia HTTP service port as listed above.
 To change this port, modify the mule-config.xml file in the jolokia-enabler Mule application.
 For more information on Jolokia, please refer to https://jolokia.org/
 
-## Note!
-Mule ESB on Alpine Linux has not, to my knowledge, received extensive testing.
-
 ## Mule ESB 4
 The Docker image containing version 4 of Mule ESB will not have Jolokia installed.
